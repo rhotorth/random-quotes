@@ -1,7 +1,6 @@
 /*      TODO:
 * -----------------------------
 *
-*   Add favorite quotes system
 *   Spread this js file into modules
 *
 *-----------------------------
@@ -23,7 +22,6 @@ const favoriteContainer = document.getElementById('favorite-container');
 
 let previousRandomIndex;
 let currentIndex;
-let favoriteCard;
 
 
 function isFavoriteCheck() {
@@ -59,57 +57,44 @@ function generateRandomQuote() {
     quoteElement.innerHTML = quote;
     authorElement.innerHTML = randomQuote.author;
 
+    favoriteButton.style.display = 'inline-block';
+    favoriteButton.style.margin = '12px';
+
 }
 
 
 function toggleFavorite () {
     const currentBackgroundColor = getComputedStyle(body).backgroundColor;
     
-    try {
-        quotes[currentIndex].isFavorite = !quotes[currentIndex].isFavorite;
-        isFavoriteCheck();
+    quotes[currentIndex].isFavorite = !quotes[currentIndex].isFavorite;
+    isFavoriteCheck();
 
-        if (quotes[currentIndex].isFavorite) {  
-            const favoriteCard = document.createElement('div');
-            
-            favoriteCard.classList.add('favorite-card');
+    if (quotes[currentIndex].isFavorite) {  
+        const favoriteCard = document.createElement('div');
+        
+        favoriteCard.classList.add('favorite-card');
 
-            if (currentBackgroundColor === 'rgb(240, 240, 240)') {
-                favoriteCard.style.backgroundColor = 'white';
-                favoriteCard.style.color = 'black';
-            } else {
-                favoriteCard.style.backgroundColor = '#18181b';
-                favoriteCard.style.color = 'white';
-            }
-
-            favoriteCard.innerHTML = `
-            <p><em>"${quotes[currentIndex].quote}"</em></p>
-            <p>${quotes[currentIndex].author}</p>`;
-            
-            favoriteContainer.appendChild(favoriteCard);
+        if (currentBackgroundColor === 'rgb(240, 240, 240)') {
+            favoriteCard.style.backgroundColor = 'white';
+            favoriteCard.style.color = 'black';
         } else {
-            const favoriteCards = document.querySelectorAll('.favorite-card');
-            
-            favoriteCards.forEach(card => {
-                if (card.textContent.includes(quotes[currentIndex].quote)) {
-                    card.remove();
-                }
-            });
+            favoriteCard.style.backgroundColor = '#18181b';
+            favoriteCard.style.color = 'white';
         }
 
-    } catch (error) {
-        quoteElement.style.color = 'red';
-        quoteElement.textContent = 'Quote has not been generated yet.';
-        
-        console.log(error.stack);
-
-        setTimeout(() => {
-            if (currentBackgroundColor === 'rgb(240, 240, 240)') {
-                quoteElement.style.color = 'black';
-            } else {
-                quoteElement.style.color = '#f0f0f0';
+        favoriteCard.innerHTML = `
+        <p><em>"${quotes[currentIndex].quote}"</em></p>
+        <p>${quotes[currentIndex].author}</p>`;
+            
+        favoriteContainer.appendChild(favoriteCard);  
+    } else {
+        const favoriteCards = document.querySelectorAll('.favorite-card');
+            
+        favoriteCards.forEach(card => {
+            if (card.textContent.includes(quotes[currentIndex].quote)) {
+                card.remove();
             }
-        }, 300);
+        });
     }
 }
 
@@ -161,4 +146,4 @@ function switchMode() {
 
 generateButton.addEventListener('click', generateRandomQuote);
 dayNightModeButton.addEventListener('click', switchMode);
-favoriteButton.addEventListener('click', toggleFavorite)
+favoriteButton.addEventListener('click', toggleFavorite);
